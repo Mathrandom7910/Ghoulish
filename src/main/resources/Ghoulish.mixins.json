@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.mathrandom7910.ghoulish.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinClientPlayNetworkHandler",
+    "MixinKeyboard",
+    "MxinClientBrandRetriever",
+    "MixinClientPlayerInteractionManager"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
