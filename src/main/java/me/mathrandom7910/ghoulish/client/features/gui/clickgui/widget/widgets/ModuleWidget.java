@@ -1,6 +1,6 @@
-package me.mathrandom7910.ghoulish.client.features.gui.widget.widgets;
+package me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets;
 
-import me.mathrandom7910.ghoulish.client.features.gui.widget.GuiWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.GuiWidget;
 import me.mathrandom7910.ghoulish.client.features.modules.module.Module;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
 import me.mathrandom7910.ghoulish.client.misc.MouseData;

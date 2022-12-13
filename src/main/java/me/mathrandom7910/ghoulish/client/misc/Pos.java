@@ -1,8 +1,8 @@
 package me.mathrandom7910.ghoulish.client.misc;
 
 public class Pos {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public Pos(int x, int y) {
         this.x = x;

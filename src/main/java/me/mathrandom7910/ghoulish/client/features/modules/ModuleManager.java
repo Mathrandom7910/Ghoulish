@@ -11,6 +11,7 @@ import me.mathrandom7910.ghoulish.client.features.modules.module.modules.client.
 import me.mathrandom7910.ghoulish.client.features.modules.module.modules.client.VersionSpoof;
 import me.mathrandom7910.ghoulish.client.features.modules.module.modules.combat.*;
 import me.mathrandom7910.ghoulish.client.features.modules.module.modules.hud.hud.ArrayListModule;
+import me.mathrandom7910.ghoulish.client.features.modules.module.modules.hud.hud.HudEditorModule;
 import me.mathrandom7910.ghoulish.client.features.modules.module.modules.misc.FakePlayer;
 import me.mathrandom7910.ghoulish.client.features.modules.module.modules.player.Eagle;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
@@ -120,5 +121,6 @@ public class ModuleManager implements ISubKey, MCInst {
         add(new AimAssist());
         add(new ArrayListModule());
         add(new Eagle());
+        add(new HudEditorModule());
     }
 }

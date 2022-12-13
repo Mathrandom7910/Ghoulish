@@ -13,7 +13,7 @@ public class EntityUtil implements MCInst {
         List<T> entities = new ArrayList<>();
         for(Entity entity : mc.world.getEntities()) {
             if(entity.equals(mc.player)) continue;
-            if(entity.getClass().equals(entityClass)) {
+            if(entityClass.isAssignableFrom(entity.getClass())) {
                 entities.add((T) entity);
             }
         }

@@ -1,8 +1,8 @@
-package me.mathrandom7910.ghoulish.client.features.gui;
+package me.mathrandom7910.ghoulish.client.features.gui.clickgui;
 
-import me.mathrandom7910.ghoulish.client.features.gui.widget.GuiWidget;
-import me.mathrandom7910.ghoulish.client.features.gui.widget.widgets.CategoryWidget;
-import me.mathrandom7910.ghoulish.client.features.gui.widget.widgets.ModuleWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.GuiWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets.CategoryWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets.ModuleWidget;
 import me.mathrandom7910.ghoulish.client.features.modules.Category;
 import me.mathrandom7910.ghoulish.client.features.modules.ModuleManager;
 import me.mathrandom7910.ghoulish.client.features.modules.module.Module;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClickGui extends Screen implements MCInst {
+public class ClickGuiScreen extends Screen implements MCInst {
     private final List<CategoryWidget> cats = new ArrayList<>();
     private final GuiModule guiModule = ModuleManager.getModule(GuiModule.class);
     public static @Nullable CategoryWidget dragging;
@@ -30,8 +30,8 @@ public class ClickGui extends Screen implements MCInst {
     public static int dragx;
     public static int dragy;
 
-    public ClickGui() {
-        super(Text.of("ClickGui"));
+    public ClickGuiScreen() {
+        super(Text.of("click_gui"));
         renderingDesc = null;
 
         Map<Category, CategoryWidget> catMap = new HashMap<>();
@@ -58,7 +58,7 @@ public class ClickGui extends Screen implements MCInst {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 //        System.out.println(mouseX + ", " + mouseY + ", " + delta);
-        fill(matrices, 0, 0, 2000, 2000, guiModule.GUI_BG_COLOR.getColor().hashCode());
+        fill(matrices, 0, 0, mc.getWindow().getWidth() / 2, mc.getWindow().getHeight() / 2, guiModule.GUI_BG_COLOR.getColor().hashCode());
         for(CategoryWidget cat : cats) {
             cat.render(null, -1, matrices, new MouseData(mouseX, mouseY));
         }

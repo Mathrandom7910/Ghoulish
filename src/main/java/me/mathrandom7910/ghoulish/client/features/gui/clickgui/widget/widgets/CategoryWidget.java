@@ -1,9 +1,9 @@
-package me.mathrandom7910.ghoulish.client.features.gui.widget.widgets;
+package me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets;
 
 import me.mathrandom7910.ConfigHandler.Config;
 import me.mathrandom7910.ghoulish.client.GhoulishClient;
-import me.mathrandom7910.ghoulish.client.features.gui.ClickGui;
-import me.mathrandom7910.ghoulish.client.features.gui.widget.GuiWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.ClickGuiScreen;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.GuiWidget;
 import me.mathrandom7910.ghoulish.client.features.modules.Category;
 import me.mathrandom7910.ghoulish.client.misc.MCInst;
 import me.mathrandom7910.ghoulish.client.misc.MouseData;
@@ -85,10 +85,10 @@ public class CategoryWidget extends GuiWidget<ModuleWidget> implements MCInst {
             if (button == 1) {
                 setExpanded(!isExpanded());
             } else if (button == 0) {
-                if (ClickGui.dragging == null) {
-                    ClickGui.dragging = this;
-                    ClickGui.dragx = (int) (mouseX - getPos().getX());
-                    ClickGui.dragy = (int) (mouseY - getPos().getY());
+                if (ClickGuiScreen.dragging == null) {
+                    ClickGuiScreen.dragging = this;
+                    ClickGuiScreen.dragx = (int) (mouseX - getPos().getX());
+                    ClickGuiScreen.dragy = (int) (mouseY - getPos().getY());
                 }
             }
 

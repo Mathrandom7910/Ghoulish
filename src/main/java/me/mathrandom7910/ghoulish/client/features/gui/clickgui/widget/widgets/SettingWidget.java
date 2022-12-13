@@ -1,7 +1,7 @@
-package me.mathrandom7910.ghoulish.client.features.gui.widget.widgets;
+package me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets;
 
-import me.mathrandom7910.ghoulish.client.features.gui.ClickGui;
-import me.mathrandom7910.ghoulish.client.features.gui.widget.GuiWidget;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.ClickGuiScreen;
+import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.GuiWidget;
 import me.mathrandom7910.ghoulish.client.features.modules.ModuleManager;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.settings.BindSetting;
@@ -34,15 +34,15 @@ public class SettingWidget extends GuiWidget<SettingWidget> implements MCInst {
     public void render(GuiWidget<?> parent, int largestChild, MatrixStack stack, MouseData mouseData) {
         RenderUtil2d.drawBox(stack, getPos(), largestChild, RenderUtil2d.FONT_HEIGHT, guiModule.GUI_COLOR.getColor());
 
-        if(mx >= getPos().getX() && mx <= getPos().getX() + lChild && my >= getPos().getY() && my <= getPos().getY() + RenderUtil2d.FONT_HEIGHT && (ClickGui.renderingDesc == null || ClickGui.renderingDesc == this)) {
+        if(mx >= getPos().getX() && mx <= getPos().getX() + lChild && my >= getPos().getY() && my <= getPos().getY() + RenderUtil2d.FONT_HEIGHT && (ClickGuiScreen.renderingDesc == null || ClickGuiScreen.renderingDesc == this)) {
 
             if(System.currentTimeMillis() > timeOver) {
-                ClickGui.renderingDesc = this;
+                ClickGuiScreen.renderingDesc = this;
                 RenderUtil2d.drawText(stack, setting.getDesc(), getPos().add(largestChild + guiModule.SIDE_BUFFER.get()), guiModule.GUI_TEXT_COLOR.getColor());
             }
         } else {
-            if(ClickGui.renderingDesc == this) {
-                ClickGui.renderingDesc = null;
+            if(ClickGuiScreen.renderingDesc == this) {
+                ClickGuiScreen.renderingDesc = null;
             }
             timeOver = (System.currentTimeMillis() + guiModule.DESC_DELAY.get());
         }
@@ -89,7 +89,7 @@ public class SettingWidget extends GuiWidget<SettingWidget> implements MCInst {
                     }
                 } else if (setting instanceof BindSetting) {
                     if (ModuleManager.getBindingModule() == null) {
-                        if(mc.currentScreen instanceof ClickGui) {
+                        if(mc.currentScreen instanceof ClickGuiScreen) {
                             mc.currentScreen.close();
                         }
                         ModuleManager.setBindingModule(setting.getMod());

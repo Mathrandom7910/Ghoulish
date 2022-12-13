@@ -1,4 +1,4 @@
-package me.mathrandom7910.ghoulish.client.features.gui.widget;
+package me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget;
 
 
 import me.mathrandom7910.ghoulish.client.features.modules.ModuleManager;
