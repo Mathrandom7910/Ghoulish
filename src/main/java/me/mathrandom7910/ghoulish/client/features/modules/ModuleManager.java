@@ -1,7 +1,5 @@
 package me.mathrandom7910.ghoulish.client.features.modules;
 
-import me.mathrandom7910.ConfigHandler.Config;
-import me.mathrandom7910.ghoulish.client.GhoulishClient;
 import me.mathrandom7910.ghoulish.client.event.sub.SubData;
 import me.mathrandom7910.ghoulish.client.event.sub.Subscriptions;
 import me.mathrandom7910.ghoulish.client.event.sub.interfaces.ISubKey;
@@ -17,11 +15,13 @@ import me.mathrandom7910.ghoulish.client.features.modules.module.modules.player.
 import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
 import me.mathrandom7910.ghoulish.client.misc.MCInst;
 import me.mathrandom7910.ghoulish.client.misc.OnKeyEvent;
+import me.mathrandom7910.ghoulish.client.storage.StorageHandler;
+import me.mathrandom7910.ghoulish.client.storage.storage.CategoryStorage;
 import me.mathrandom7910.ghoulish.client.util.ChatUtil;
+import me.mathrandom7910.ghoulish.client.util.KeyUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.event.KeyEvent;
 import java.util.*;
 
 
@@ -63,19 +63,26 @@ public class ModuleManager implements ISubKey, MCInst {
     }
 
     private static void loadModules() {
-        for(Module module : MODULES) {
-            Config config = GhoulishClient.CONFIG_HANDLER.addConfig(module.getName());
-            if(config == null) continue;
+        for(CategoryStorage cs : StorageHandler.DATA.getCategories().values()) {
+            for(String modName : cs.getModulesMap().keySet()) {
+                Module module = getModule(modName);
+                if(module == null) {
+                    continue;
+                }
 
-            for(Setting<?> setting : module.getSettings()) {
-                String strVal = config.get(setting.getName());
-                if(strVal == null) continue;
+                for(Map<String, String> modStor : cs.getModulesMap().values()) {
+                    for(String setName : modStor.keySet()) {
+                        Setting<?> setting = module.getSetting(setName);
+                        if(setting == null) {
+                            continue;
+                        }
 
-                try {
-                    setting.set(strVal);
-                } catch (Exception e) {
-                    GhoulishClient.LOG.error("Failed to set setting");
-                    e.printStackTrace();
+                        try {
+                            setting.set(modStor.get(setName));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
@@ -98,7 +105,7 @@ public class ModuleManager implements ISubKey, MCInst {
         if(bindingModule != null) {
             bindingModule.getBind().set(subData.data().key());
             bindingModule = null;
-            ChatUtil.info("Set bind to " + subData.data().key() + " (key " + KeyEvent.getKeyText(subData.data().key()) + ")");
+            ChatUtil.info("Set bind to " + subData.data().key() + " (key " + KeyUtil.getKeyName(subData.data().key()) + ")");
             return;
         }
 
@@ -107,6 +114,10 @@ public class ModuleManager implements ISubKey, MCInst {
                 m.toggle();
             }
         }
+    }
+
+    public static List<Module> inCategory(Category category) {
+        return MODULES.stream().filter(mod -> mod.getCategory().equals(category)).toList();
     }
 
     private static void addModules() {

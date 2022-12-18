@@ -25,9 +25,9 @@ public class AutoCrystal extends Module implements ISubTick {
     private final IntSetting clicksAfter = addInt("clicksafter", "amount of clicks after a crystal is destroyed to well... click", 0, 0, 20);
     private final IntSetting clickDelay = addInt("clickdelay", "tick delay between clicks", 0, 0, 10);
     private final BoolSetting breakCrystals = addBool("break", "auto breaks crystals", true);
-    private final DoubleSetting maxDistBreak = addDub("maxdistbreak", "maximum distance to break crystals", 3, 1, 6);
+    private final DoubleSetting maxDistBreak = addDub("maxdistbreak", "maximum distance to break crystals", 3, 1, 6).requires(breakCrystals, true);
     private final BoolSetting placeCrystals = addBool("place", "auto places crystals", true);
-    private final DoubleSetting maxDistPlace = addDub("maxdistplace", "maximum distance to place crystals", 3, 1, 6);
+    private final DoubleSetting maxDistPlace = addDub("maxdistplace", "maximum distance to place crystals", 3, 1, 6).requires(placeCrystals, true);
     private final BoolSetting topOnly = addBool("toponly", "only places crystals when looking at the top of blocks", true);
 
     private int tick;

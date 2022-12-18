@@ -1,11 +1,14 @@
 package me.mathrandom7910.ghoulish.client.features.modules.settings;
 
+import me.mathrandom7910.ghoulish.client.GhoulishClient;
 import me.mathrandom7910.ghoulish.client.features.modules.module.Module;
 import me.mathrandom7910.ghoulish.client.misc.Named;
+import me.mathrandom7910.ghoulish.client.storage.StorageHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Setting<T> extends Named {
@@ -15,10 +18,6 @@ public abstract class Setting<T> extends Named {
 
     @Nullable
     private List<Requirement<?>> requirements;
-
-    public T getVal() {
-        return val;
-    }
 
     public T get() {
         return val;
@@ -43,17 +42,23 @@ public abstract class Setting<T> extends Named {
         }
 
         forceSet(val);
-
-        if(onRun != null) {
-            onRun.run();
-        }
-
-        mod.save();
         return true;
     }
 
     public void forceSet(T val) {
         this.val = val;
+
+        if(onRun != null) {
+            onRun.run();
+        }
+
+        if (!GhoulishClient.loaded) return;
+
+        var modulesMap = StorageHandler.DATA.getCategories()
+                .get(mod.getCategory().name()).getModulesMap();
+        modulesMap.computeIfAbsent(mod.getName(), e -> new HashMap<>())
+                .put(getName(), toString());
+        StorageHandler.save();
     }
 
     public EnumSettingType geteSettingType() {
@@ -62,7 +67,7 @@ public abstract class Setting<T> extends Named {
 
     @Override
     public String toString() {
-        return getVal().toString();
+        return get().toString();
     }
 
     public Module getMod() {

@@ -37,11 +37,11 @@ public abstract class NumSetting<T extends Number & Comparable<T>> extends Setti
     public abstract boolean setLong(long lon);
 
     private boolean isGreaterThan(T num) {
-        return getVal().compareTo(num) > 0;
+        return get().compareTo(num) > 0;
     }
 
     private boolean isLessThan(T num) {
-        return getVal().compareTo(num) < 0;
+        return get().compareTo(num) < 0;
     }
 
     public boolean isInBounds(T num) {

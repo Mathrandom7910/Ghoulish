@@ -1,65 +1,32 @@
 package me.mathrandom7910.ghoulish.client.features.modules.module.modules.hud;
 
-import me.mathrandom7910.ConfigHandler.Config;
-import me.mathrandom7910.ghoulish.client.GhoulishClient;
 import me.mathrandom7910.ghoulish.client.event.sub.interfaces.ISubHudRender;
 import me.mathrandom7910.ghoulish.client.features.modules.Category;
 import me.mathrandom7910.ghoulish.client.features.modules.module.Module;
+import me.mathrandom7910.ghoulish.client.features.modules.settings.settings.num.nums.floatingpoint.floatingpoint.FloatSetting;
 import me.mathrandom7910.ghoulish.client.misc.Pos;
 import org.jetbrains.annotations.Range;
 
 public abstract class HudModule extends Module implements ISubHudRender {
-    private float percX;
-    private float percY;
-    private final Config cfg;
+    private final FloatSetting xPerc;
+    private final FloatSetting yPerc;
 
     public HudModule(String name, String desc, @Range(from = 0, to = 1) float pX, @Range(from = 0, to = 1) float pY) {
         super(name, desc, Category.HUD);
 
-        cfg = GhoulishClient.CONFIG_HANDLER.addConfig("hud_" + name);
-
-        cfg.initVal("x", String.valueOf(pX));
-        cfg.initVal("y", String.valueOf(pY));
-
-        percX = Float.parseFloat(cfg.get("x"));
-        percY = Float.parseFloat(cfg.get("y"));
-
-        if(percX > 1) {
-            percX = .5f;
-        }
-
-        if (percY > 1) {
-            percY = .5f;
-        }
-
-        savePos();
+        xPerc = addFloat("x", "x percentage of this module when rendered", pX, 0, 1);
+        yPerc = addFloat("y", "y percentage of this module when rendered", pY, 0, 1);
     }
 
     public abstract boolean doesMouseCollide(double mx, double my);
 
     public void setPos(int x, int y) {
-        percX = x / (float) (mc.getWindow().getWidth() / 2);
-        percY = y / (float) (mc.getWindow().getHeight() / 2);
-
-        if(!GhoulishClient.loaded) {
-            return;
-        }
-
-        savePos();
-    }
-
-    private void savePos() {
-        cfg.set("x", String.valueOf(percX));
-        cfg.set("y", String.valueOf(percY));
-        try {
-            cfg.save();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        xPerc.set(x / (float) (mc.getWindow().getWidth() / 2));
+        yPerc.set(y / (float) (mc.getWindow().getHeight() / 2));
     }
 
     public Pos getPos() {
-        return new Pos((int) (percX * (mc.getWindow().getWidth() / 2)), (int) (percY * (mc.getWindow().getHeight() / 2)));
+        return new Pos((int) (xPerc.get() * (mc.getWindow().getWidth() / 2)), (int) (yPerc.get() * (mc.getWindow().getHeight() / 2)));
     }
 
     protected Quadrant getQuadrant() {

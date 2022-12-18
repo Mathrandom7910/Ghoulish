@@ -27,7 +27,7 @@ public class ArrayListModule extends HudModule {
     private List<Module> sortedModules;
 
     public ArrayListModule() {
-        super("arraylist", "visual list of enabled modules", .5f, .5f);
+        super("arraylist", "visual list of enabled modules", 1f, 0f);
     }
 
     @Override
@@ -60,12 +60,10 @@ public class ArrayListModule extends HudModule {
 
         int renY = getPos().getY();
         int renX = getPos().getX();
-
-        System.out.println(renX + " " + renY);
         boxes.clear();
 
         for(Module module : sortedModules) {
-            if(!module.isEnabled()) continue;
+            if(!module.isEnabled() || !module.shouldRender()) continue;
             int nameWidth = RenderUtil2d.measureText(module.getName());
 
             boxes.add(RenderUtil2d.drawBox(subData.data().stack(),

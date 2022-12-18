@@ -1,6 +1,7 @@
 package me.mathrandom7910.ghoulish.client.features.modules.settings.settings.num.nums.floatingpoint.floatingpoint;
 
 import me.mathrandom7910.ghoulish.client.features.modules.module.Module;
+import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.settings.num.nums.floatingpoint.FloatingPointSetting;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,5 +23,10 @@ public class DoubleSetting extends FloatingPointSetting<Double> {
     @Override
     public boolean setDouble(double dub) {
         return set(dub);
+    }
+
+    @Override
+    public <K> DoubleSetting requires(Setting<K> setting, K toBe) {
+        return (DoubleSetting) super.requires(setting, toBe);
     }
 }

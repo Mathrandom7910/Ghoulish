@@ -1,32 +1,29 @@
 package me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.widgets;
 
-import me.mathrandom7910.ConfigHandler.Config;
-import me.mathrandom7910.ghoulish.client.GhoulishClient;
 import me.mathrandom7910.ghoulish.client.features.gui.clickgui.ClickGuiScreen;
 import me.mathrandom7910.ghoulish.client.features.gui.clickgui.widget.GuiWidget;
 import me.mathrandom7910.ghoulish.client.features.modules.Category;
 import me.mathrandom7910.ghoulish.client.misc.MCInst;
 import me.mathrandom7910.ghoulish.client.misc.MouseData;
 import me.mathrandom7910.ghoulish.client.misc.Pos;
+import me.mathrandom7910.ghoulish.client.storage.StorageHandler;
+import me.mathrandom7910.ghoulish.client.storage.storage.CategoryStorage;
 import me.mathrandom7910.ghoulish.client.util.RenderUtil2d;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.Nullable;
 
 public class CategoryWidget extends GuiWidget<ModuleWidget> implements MCInst {
-    private final Config guiConfig = GhoulishClient.CONFIG_HANDLER.addConfig("gui_" + getName());
+    private final CategoryStorage catStore;
     private final Category cat;
 
     public CategoryWidget(Category category, Pos startPos) {
         super(category.name());
         cat = category;
+        catStore = StorageHandler.DATA.getCategories().get(category.name());
 
-        guiConfig.initVal("x", String.valueOf(startPos.getX()));
-        guiConfig.initVal("y", String.valueOf(startPos.getY()));
-        guiConfig.initVal("exp", "true");
+        boolean exp = catStore.isExpanded();
 
-        boolean exp = Boolean.parseBoolean(guiConfig.get("exp"));
-
-        setPos(new Pos(Integer.parseInt(guiConfig.get("x")), Integer.parseInt(guiConfig.get("y"))));
+        setPos(new Pos(catStore.getX(), catStore.getY()));
         setExpanded(exp, false);
 //        setPos(new Pos(new Random().nextInt(0, 500), new Random().nextInt(0, 500)));
     }
@@ -39,11 +36,11 @@ public class CategoryWidget extends GuiWidget<ModuleWidget> implements MCInst {
 
     public void save(@Nullable Pos pos) {
         if (pos != null) {
-            guiConfig.set("x", String.valueOf(pos.getX()));
-            guiConfig.set("y", String.valueOf(pos.getY()));
+            catStore.setX(pos.getX());
+            catStore.setY(pos.getY());
         }
-        guiConfig.set("exp", String.valueOf(isExpanded()));
-        GhoulishClient.CONFIG_HANDLER.saveConfigs();
+        catStore.setExpanded(isExpanded());
+        StorageHandler.save();
     }
 
     @Override

@@ -1,7 +1,5 @@
 package me.mathrandom7910.ghoulish.client.features.modules.module;
 
-import me.mathrandom7910.ConfigHandler.Config;
-import me.mathrandom7910.ghoulish.client.GhoulishClient;
 import me.mathrandom7910.ghoulish.client.event.sub.interfaces.IDispatch;
 import me.mathrandom7910.ghoulish.client.features.modules.Category;
 import me.mathrandom7910.ghoulish.client.features.modules.settings.Setting;
@@ -39,6 +37,11 @@ public class Module extends Named implements MCInst, IDispatch {
     private final BoolSetting enabled = addBool("enabled", "", false);
     private final BindSetting bind = addBind("bind", "");
     private final BoolSetting notifs = addBool("notifications", "", true);
+    private final BoolSetting renderOnList = addBool("renderonlist", "renders this module on the arraylist", true);
+
+    public boolean shouldRender() {
+        return renderOnList.get();
+    }
 
     public @Nullable Setting<?> getSetting(String name) {
         for (Setting<?> s : getSettings()) {
@@ -53,7 +56,7 @@ public class Module extends Named implements MCInst, IDispatch {
         super(name, desc);
         category = cat;
     }
-
+    
     public final void enable() {
         onEnable();
         for (var th : intervals) {
@@ -97,7 +100,7 @@ public class Module extends Named implements MCInst, IDispatch {
     }
 
     protected BindSetting addBind(String name, String desc) {
-        return addSetting(new BindSetting(name, desc, 0, this));
+        return addSetting(new BindSetting(name, desc, -1, this));
     }
 
     protected ByteSetting addByte(String name, String desc, @Range(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) int defVal, @Range(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) int min, @Range(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) int max) {
@@ -175,18 +178,6 @@ public class Module extends Named implements MCInst, IDispatch {
 
     public List<Setting<?>> getSettings() {
         return settings;
-    }
-
-    public void save() {
-        if (!GhoulishClient.loaded) return;
-        Config config = GhoulishClient.CONFIG_HANDLER.addConfig(getName());
-        if (config == null) {
-            info("Error saving config... Maybe the files were tampered with? Try deleting mathrandom7910/ghoulish/" + getName() + ".cfghndl in your current minecraft directory. If that doesn't work, try relaunching (and/or) deleting the folder");
-        }
-        for (Setting<?> setting : settings) {
-            config.set(setting.getName(), setting.toString());
-        }
-        GhoulishClient.CONFIG_HANDLER.saveConfigs();
     }
 
     public BoolSetting getEnabled() {
